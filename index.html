@@ -1,31 +1,35 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  
-
-
-
 <!-- এইটা Head ট্যাগে বসান -->
 <script>
 (function() {
     const blockId = "int-24718";
     
-    setTimeout(() => {
-        if (typeof Adsgram === 'undefined') {
-            console.log('Adsgram SDK লোড হয়নি');
-            return;
-        }
-        
-        Adsgram.init({ blockId }).show()
-            .then(() => {
-                // সাফল্য - এখানে রিওয়ার্ড দিন
-                console.log('✅ অ্যাড দেখানো হয়েছে');
-                localStorage.setItem('adWatched', Date.now());
-            })
-            .catch(error => {
-                console.log('⛔ অ্যাড এরর:', error.description);
-            });
-    }, 4000);
+    // গ্লোবাল ফাংশন হিসেবে ডিফাইন করছি যাতে পরে কল করা যায়
+    window.showAdsgramAd = function(callback) {
+        setTimeout(() => {
+            if (typeof Adsgram === 'undefined') {
+                console.log('Adsgram SDK লোড হয়নি');
+                // SDK লোড না হলে সরাসরি কলব্যাক কল করব
+                if (callback) callback(true);
+                return;
+            }
+            
+            Adsgram.init({ blockId }).show()
+                .then(() => {
+                    // সাফল্য - এখানে রিওয়ার্ড দিন
+                    console.log('✅ অ্যাড দেখানো হয়েছে');
+                    localStorage.setItem('adWatched', Date.now());
+                    if (callback) callback(true);
+                })
+                .catch(error => {
+                    console.log('⛔ অ্যাড এরর:', error.description);
+                    // এরর হলেও কলব্যাক কল করব (false পাঠাব)
+                    if (callback) callback(false);
+                });
+        }, 1000); // ১ সেকেন্ড delay
+    };
 })();
 </script>
 <script src="https://sad.adsgram.ai/js/sad.min.js" async></script>
@@ -276,64 +280,34 @@
             },
             
             // ========== funny ==========
-          
-          
-          
             {
-
                 id: 16, 
-
                 code: "60001",
-
                 title: "Omar on fire new video", 
-
                 year: "2026", 
-
                 rating: "8.7", 
-
                 quality: "4K", 
-
                 category: "anime", 
-
-                thumbnail: "https://i.ibb.co.com/wZGQsrdp/JGm-IXCdn-Ku-M-HD.jpg",
-
+                thumbnail: "https://i.ibb.co.com/wZGQsrdp/JGm-IXCdnKu-M-HD.jpg",
                 videoUrl: "https://youtu.be/JGmIXCdnKuM?si=7Qr3P-x-acQWToVz",
-
                 downloadUrl: "https://otieu.com/4/9717825",
-
                 liveUrl: "https://otieu.com/4/9429975",
-
                 description: "নির্বাচন স্পেশাল ফানি ভিডিও। Omar on fire" 
-
             },
           
-          
             { 
-
                 id: 17, 
-
                 code: "60001",
-
                 title: "তেলের যে দাম - নাসা ভাই বিনোদন", 
-
                 year: "2025", 
-
                 rating: "8.7", 
-
                 quality: "4K", 
-
                 category: "anime", 
-
                 thumbnail: "https://i.ibb.co.com/M5jGGKt8/b0b-L-ri-6do-HD.jpg",
-
                 videoUrl: "https://youtu.be/b0bL_ri_6do?si=XoUwT9vaZnoInivx",
-
                 downloadUrl: "https://otieu.com/4/9717825",
-
                 liveUrl: "https://otieu.com/4/9429975",
-
                 description: "তেলের যে দাম - নাসা ভাই বিনোদন" 
-
             },
              
             { 
@@ -430,31 +404,18 @@
             // ========== Natok ==========
           
           { 
-
                 id: 100, 
-
                 code: "60001",
-
                 title: "Welcome to Bachelor Point Season 5,", 
-
                 year: "2026", 
-
                 rating: "8.7", 
-
                 quality: "4K", 
-
                 category: "natok", 
-
                 thumbnail: "https://i.ibb.co.com/j9ySFdJx/Qo0-ANLMa-Sg-SD.jpg",
-
                 videoUrl: "https://youtu.be/_Qo0ANLMaSg?si=Ssosu9EZF-HzaXnj",
-
                 downloadUrl: "https://omg10.com/4/9717825",
-
                 liveUrl: "https://omg10.com/4/9429975",
-
                 description: "Eagle Team's new drama - Islamic Biye" 
-
             },
           
           
@@ -1573,12 +1534,12 @@
             </h3>
             
             <p class="ad-message" id="adMessage">
-                Redirecting to ad in 2 seconds...
+                Please watch the ad to continue...
             </p>
             
             <div class="ad-warning" id="adWarning">
                 <i class="fas fa-exclamation-triangle"></i>
-                Warning: If you go back, you'll have to watch the 10-second ad again!
+                Warning: If you go back, you'll have to watch the ad again!
             </div>
             
             <button class="ad-skip-btn" id="skipAdBtn" onclick="skipAd()">
@@ -1866,6 +1827,7 @@
         let canSkip = false;
         let adWindow = null;
         let downloadMode = false;
+        let afterAdsgramCallback = null;
 
         // Apply site configuration
         document.getElementById('siteName').textContent = SITE_CONFIG.siteName;
@@ -1931,17 +1893,37 @@
             selectedMovie = movieId === "trending" ? TRENDING_MOVIE : MOVIES.find(m => m.id === movieId);
             timeLeft = AD_CONFIG.duration;
             downloadMode = false;
-            showAdModal();
+            
+            // প্রথমে Adsgram এড দেখাব
+            if (typeof showAdsgramAd === 'function') {
+                showAdsgramAd(function(success) {
+                    // এড দেখানোর পর (সফল বা ব্যর্থ) ওল্ড সিস্টেম চালাব
+                    showOldAdSystem();
+                });
+            } else {
+                // Adsgram ফাংশন না থাকলে সরাসরি ওল্ড সিস্টেম
+                showOldAdSystem();
+            }
         }
 
         function handleDownloadClick(movie) {
             selectedMovie = movie;
             timeLeft = AD_CONFIG.downloadAdDuration || AD_CONFIG.duration;
             downloadMode = true;
-            showAdModal();
+            
+            // প্রথমে Adsgram এড দেখাব
+            if (typeof showAdsgramAd === 'function') {
+                showAdsgramAd(function(success) {
+                    // এড দেখানোর পর (সফল বা ব্যর্থ) ওল্ড সিস্টেম চালাব
+                    showOldAdSystem();
+                });
+            } else {
+                // Adsgram ফাংশন না থাকলে সরাসরি ওল্ড সিস্টেম
+                showOldAdSystem();
+            }
         }
 
-        function showAdModal() {
+        function showOldAdSystem() {
             const modal = document.getElementById('adModal');
             const timerSpan = document.getElementById('adTimer');
             const progressCircle = document.getElementById('adProgress');
@@ -2013,14 +1995,17 @@
                 closeAdModal();
                 
                 if (downloadMode) {
+                    // ডাউনলোড মোডে টেলিগ্রাম রিডাইরেক্ট
                     if (TELEGRAM_CONFIG.enabled && TELEGRAM_CONFIG.redirectAfterAd) {
                         setTimeout(() => {
                             window.open(TELEGRAM_CONFIG.channelLink, '_blank');
                         }, 500);
                     } else {
-                        openInYouTubeApp(selectedMovie.downloadUrl);
+                        // অথবা সরাসরি ডাউনলোড URL
+                        window.open(selectedMovie.downloadUrl, '_blank');
                     }
                 } else {
+                    // প্লেয়ার ওপেন করব
                     openPlayer();
                 }
             }
@@ -2101,7 +2086,7 @@
                     if (adWindow && !adWindow.closed) adWindow.close();
                     
                     modal.classList.remove('show');
-                    setTimeout(showAdModal, 500);
+                    setTimeout(showOldAdSystem, 500);
                     return;
                 }
                 
@@ -2127,7 +2112,7 @@
                             window.open(TELEGRAM_CONFIG.channelLink, '_blank');
                         }, 500);
                     } else {
-                        openInYouTubeApp(selectedMovie.downloadUrl);
+                        window.open(selectedMovie.downloadUrl, '_blank');
                     }
                 } else {
                     openPlayer();
