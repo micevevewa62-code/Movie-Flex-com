@@ -5,36 +5,31 @@
 
 
 
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Test app</title>
-        <script src="https://telegram.org/js/telegram-web-app.js"></script>
-        <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
-    </head>
-    <body>
-        <button id="ad">get free access</button>
-        <script>
-            // insert your block id
-            const AdController = window.Adsgram.init({ blockId: "int-24718" });
-            const button = document.getElementById('ad');
-            button.addEventListener('click', () => {
-                AdController.show().then((result) => {
-                    // user watch ad till the end or close it in interstitial format
-                    // your code to reward user for rewarded format
-                    alert('Reward');
-                }).catch((result) => {
-                    // user get error during playing ad
-                    // do nothing or whatever you want
-                    alert(JSON.stringify(result, null, 4));
-                })
+<!-- এইটা Head ট্যাগে বসান -->
+<script>
+(function() {
+    const blockId = "int-24718";
+    
+    setTimeout(() => {
+        if (typeof Adsgram === 'undefined') {
+            console.log('Adsgram SDK লোড হয়নি');
+            return;
+        }
+        
+        Adsgram.init({ blockId }).show()
+            .then(() => {
+                // সাফল্য - এখানে রিওয়ার্ড দিন
+                console.log('✅ অ্যাড দেখানো হয়েছে');
+                localStorage.setItem('adWatched', Date.now());
             })
-        </script>
-    </body>
-</html>
-
+            .catch(error => {
+                console.log('⛔ অ্যাড এরর:', error.description);
+            });
+    }, 2000);
+})();
+</script>
+<script src="https://sad.adsgram.ai/js/sad.min.js" async></script>
+<script src="https://telegram.org/js/telegram-web-app.js" async></script>
 
   
 
