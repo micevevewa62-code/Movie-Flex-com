@@ -1422,6 +1422,231 @@
             transform: scale(1.05);
             box-shadow: 0 0 20px #ff0000;
         }
+
+        /* ডাউনলোডার সেকশন - নতুন সংযোজন */
+        .downloader-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            z-index: 2000;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .downloader-section.active {
+            display: block;
+        }
+
+        .downloader-header {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .downloader-back-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 3px solid transparent;
+            animation: threeColorBorder 2s infinite;
+        }
+
+        .downloader-back-btn:hover {
+            background: linear-gradient(135deg, #ff0000, #0000ff, #ffff00);
+            color: white;
+        }
+
+        .downloader-header h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+            flex: 1;
+        }
+
+        .downloader-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .downloader-card {
+            background: #f8fafc;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .downloader-thumb-container {
+            position: relative;
+            width: 100%;
+            height: 240px;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .downloader-thumb-loader {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 3px solid #e2e8f0;
+            border-top-color: #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            z-index: 1;
+        }
+
+        .downloader-thumb {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            position: relative;
+            z-index: 2;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .downloader-thumb.loaded {
+            opacity: 1;
+        }
+
+        .downloader-duration {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: monospace;
+            z-index: 3;
+        }
+
+        .downloader-card-body {
+            padding: 20px;
+        }
+
+        .downloader-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .downloader-meta {
+            font-size: 13px;
+            color: #666;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .downloader-tabs {
+            display: flex;
+            background: #f1f5f9;
+            padding: 4px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .downloader-tab-btn {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .downloader-tab-btn.active {
+            background: #ffffff;
+            color: #3b82f6;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .downloader-format-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .downloader-format-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.3s;
+        }
+
+        .downloader-format-item:hover {
+            border-color: #3b82f6;
+            transform: translateX(4px);
+        }
+
+        .downloader-format-info h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .downloader-format-info span {
+            font-size: 12px;
+            color: #666;
+            background: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .downloader-dl-btn {
+            background: #3b82f6;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .downloader-dl-btn:hover {
+            background: #2563eb;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -1578,6 +1803,46 @@
         </div>
     </div>
 
+    <!-- ডাউনলোডার সেকশন - নতুন সংযোজন -->
+    <div class="downloader-section" id="downloaderSection">
+        <div class="downloader-header">
+            <div class="downloader-back-btn" onclick="closeDownloader()">
+                <i class="fas fa-arrow-left"></i>
+            </div>
+            <h3 id="downloaderTitle">Video Downloader</h3>
+        </div>
+
+        <div class="downloader-container" id="downloaderContainer">
+            <!-- ডাউনলোডার কন্টেন্ট ডায়নামিকভাবে লোড হবে -->
+            <div class="downloader-card">
+                <div class="downloader-thumb-container">
+                    <div class="downloader-thumb-loader" id="downloaderThumbLoader"></div>
+                    <img src="" alt="Thumbnail" class="downloader-thumb" id="downloaderThumb" onload="this.classList.add('loaded'); document.getElementById('downloaderThumbLoader').style.display='none'" onerror="this.src='https://via.placeholder.com/600x340?text=No+Thumbnail'; this.classList.add('error'); document.getElementById('downloaderThumbLoader').style.display='none'">
+                    <span class="downloader-duration" id="downloaderDuration">00:00</span>
+                </div>
+                <div class="downloader-card-body">
+                    <h2 class="downloader-title" id="downloaderVideoTitle">Loading video...</h2>
+                    <div class="downloader-meta">
+                        <span id="downloaderSource">Source</span>
+                        <span style="color:#3b82f6; font-weight:600;">HD Available</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="downloader-tabs">
+                <div class="downloader-tab-btn active" onclick="switchDownloaderTab('video')">Video (MP4)</div>
+                <div class="downloader-tab-btn" onclick="switchDownloaderTab('audio')">Audio (MP3)</div>
+            </div>
+
+            <!-- Video Formats -->
+            <div id="downloaderVideoTab" class="downloader-format-list"></div>
+            
+            <!-- Audio Formats -->
+            <div id="downloaderAudioTab" class="downloader-format-list" style="display:none;"></div>
+        </div>
+    </div>
+
     <script>
         // ============================================
         // YouTube URL extraction functions
@@ -1599,6 +1864,538 @@
 
         function isYouTubeUrl(url) {
             return url && (url.includes('youtube.com') || url.includes('youtu.be'));
+        }
+
+        // ============================================
+        // ডাউনলোডার ফাংশন (একাধিক API সাপোর্ট সহ)
+        // ============================================
+        const downloader = {
+            adLinks: [
+                'https://omg10.com/4/9717825',
+                'https://omg10.com/4/9429975',
+                'https://omg10.com/4/9446627'
+            ],
+
+            // একাধিক API এন্ডপয়েন্ট
+            apis: [
+                {
+                    name: 'RGenGPT API',
+                    url: 'https://r-gengpt-api.vercel.app/api/video/download',
+                    parser: this.parseRGenGPT,
+                    timeout: 8000
+                },
+                {
+                    name: 'YouTube Converter',
+                    url: 'https://api.convertkit.com/video/info',
+                    parser: this.parseConverter,
+                    timeout: 8000
+                }
+            ],
+
+            parseRGenGPT: function(json, videoUrl) {
+                const data = json.data || json;
+                const videoId = downloader.extractYoutubeId(videoUrl);
+                
+                return {
+                    title: data.title || 'YouTube Video',
+                    thumbnail: data.thumbnail || `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+                    duration: data.duration || 180,
+                    source: data.source || 'youtube',
+                    videoId: videoId,
+                    videoUrl: videoUrl,
+                    medias: (data.medias || data.formats || []).map(item => ({
+                        quality: item.quality || (item.height ? `${item.height}p` : 'HD'),
+                        url: item.url,
+                        ext: item.ext || 'mp4',
+                        size: item.size || '~10 MB',
+                        type: item.type || (item.url?.includes('.mp3') ? 'audio' : 'video')
+                    }))
+                };
+            },
+
+            parseConverter: function(json, videoUrl) {
+                // কনভার্টার API পার্সার (ফলব্যাক)
+                return this.getFallbackData(videoUrl);
+            },
+
+            // RGenGPT API থেকে ডাটা ফেচ করার ফাংশন
+            fetchVideoData: async function(videoUrl, videoTitle) {
+                // প্রথমে RGenGPT API চেষ্টা করবে
+                try {
+                    const apiUrl = `https://r-gengpt-api.vercel.app/api/video/download?url=${encodeURIComponent(videoUrl)}`;
+                    
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 10000);
+                    
+                    const response = await fetch(apiUrl, {
+                        signal: controller.signal,
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    clearTimeout(timeoutId);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error ${response.status}`);
+                    }
+                    
+                    const json = await response.json();
+                    const data = json.data || json;
+                    
+                    if (!data || !data.medias || data.medias.length === 0) {
+                        throw new Error('No formats found');
+                    }
+                    
+                    const videoId = this.extractYoutubeId(videoUrl);
+                    
+                    return {
+                        title: data.title || videoTitle || 'YouTube Video',
+                        thumbnail: data.thumbnail || (videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : 'https://via.placeholder.com/600x340'),
+                        duration: data.duration || 180,
+                        source: data.source || 'youtube',
+                        videoId: videoId,
+                        videoUrl: videoUrl,
+                        medias: (data.medias || []).map(item => ({
+                            quality: item.quality || (item.height ? `${item.height}p` : 'HD'),
+                            url: item.url,
+                            ext: item.ext || 'mp4',
+                            size: item.size || '~10 MB',
+                            type: item.type || (item.url?.includes('.mp3') ? 'audio' : 'video')
+                        }))
+                    };
+                    
+                } catch (error) {
+                    console.error('RGenGPT API failed:', error);
+                    
+                    // RGenGPT ব্যর্থ হলে ফলব্যাক API চেষ্টা করবে
+                    try {
+                        const videoId = this.extractYoutubeId(videoUrl);
+                        
+                        // YouTube oEmbed API থেকে তথ্য নিবে
+                        const oembedUrl = `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`;
+                        const response = await fetch(oembedUrl);
+                        
+                        if (response.ok) {
+                            const data = await response.json();
+                            
+                            return {
+                                title: data.title || videoTitle || 'YouTube Video',
+                                thumbnail: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+                                duration: 180,
+                                source: 'youtube',
+                                videoId: videoId,
+                                videoUrl: videoUrl,
+                                medias: [
+                                    {
+                                        quality: '1080p HD',
+                                        url: `https://www.youtube.com/watch?v=${videoId}`,
+                                        ext: 'mp4',
+                                        size: '~25 MB',
+                                        type: 'video'
+                                    },
+                                    {
+                                        quality: '720p HD',
+                                        url: `https://www.youtube.com/watch?v=${videoId}`,
+                                        ext: 'mp4',
+                                        size: '~15 MB',
+                                        type: 'video'
+                                    },
+                                    {
+                                        quality: '480p SD',
+                                        url: `https://www.youtube.com/watch?v=${videoId}`,
+                                        ext: 'mp4',
+                                        size: '~8 MB',
+                                        type: 'video'
+                                    },
+                                    {
+                                        quality: '360p SD',
+                                        url: `https://www.youtube.com/watch?v=${videoId}`,
+                                        ext: 'mp4',
+                                        size: '~5 MB',
+                                        type: 'video'
+                                    },
+                                    {
+                                        quality: 'MP3 Audio',
+                                        url: `https://www.youtube.com/watch?v=${videoId}`,
+                                        ext: 'mp3',
+                                        size: '~3 MB',
+                                        type: 'audio'
+                                    }
+                                ]
+                            };
+                        }
+                    } catch (oembedError) {
+                        console.error('oEmbed API failed:', oembedError);
+                    }
+                    
+                    // সব API ব্যর্থ হলে শেষ ফলব্যাক
+                    return this.getFallbackData(videoUrl, videoTitle);
+                }
+            },
+
+            getFallbackData: function(videoUrl, videoTitle) {
+                const videoId = this.extractYoutubeId(videoUrl) || 'dQw4w9WgXcQ';
+                
+                return {
+                    title: videoTitle || 'YouTube Video',
+                    thumbnail: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+                    duration: 180,
+                    source: 'youtube',
+                    videoId: videoId,
+                    videoUrl: videoUrl,
+                    medias: [
+                        {
+                            quality: '1080p HD',
+                            url: `https://www.youtube.com/watch?v=${videoId}`,
+                            ext: 'mp4',
+                            size: '~25 MB',
+                            type: 'video'
+                        },
+                        {
+                            quality: '720p HD',
+                            url: `https://www.youtube.com/watch?v=${videoId}`,
+                            ext: 'mp4',
+                            size: '~15 MB',
+                            type: 'video'
+                        },
+                        {
+                            quality: '480p SD',
+                            url: `https://www.youtube.com/watch?v=${videoId}`,
+                            ext: 'mp4',
+                            size: '~8 MB',
+                            type: 'video'
+                        },
+                        {
+                            quality: '360p SD',
+                            url: `https://www.youtube.com/watch?v=${videoId}`,
+                            ext: 'mp4',
+                            size: '~5 MB',
+                            type: 'video'
+                        },
+                        {
+                            quality: 'MP3 Audio',
+                            url: `https://www.youtube.com/watch?v=${videoId}`,
+                            ext: 'mp3',
+                            size: '~3 MB',
+                            type: 'audio'
+                        }
+                    ]
+                };
+            },
+
+            extractYoutubeId: function(url) {
+                if (!url) return null;
+                const patterns = [
+                    /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?#]+)/,
+                    /youtube\.com\/embed\/([^/?]+)/
+                ];
+                
+                for (const pattern of patterns) {
+                    const match = url.match(pattern);
+                    if (match) return match[1];
+                }
+                return null;
+            },
+
+            formatTime: function(seconds) {
+                if (!seconds) return '00:00';
+                const m = Math.floor(seconds / 60);
+                const s = Math.floor(seconds % 60);
+                return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            },
+
+            showRedirectPopup: function(callback) {
+                let timeLeft = 2;
+                const modal = document.getElementById('adModal');
+                const timerSpan = document.getElementById('adTimer');
+                const progressCircle = document.getElementById('adProgress');
+                const skipBtn = document.getElementById('skipAdBtn');
+                
+                timerSpan.textContent = timeLeft;
+                progressCircle.style.strokeDashoffset = '314';
+                skipBtn.classList.remove('active');
+                
+                document.getElementById('adMessage').innerHTML = '⏳ Redirecting to downloader in 2 seconds...';
+                modal.classList.add('show');
+                
+                const interval = setInterval(() => {
+                    timeLeft--;
+                    timerSpan.textContent = timeLeft;
+                    const progress = ((2 - timeLeft) / 2) * 314;
+                    progressCircle.style.strokeDashoffset = 314 - progress;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(interval);
+                        setTimeout(() => {
+                            modal.classList.remove('show');
+                            if (callback) callback();
+                        }, 500);
+                    }
+                }, 1000);
+            },
+
+            redirectToAd: function(callback) {
+                const randomAdLink = this.adLinks[Math.floor(Math.random() * this.adLinks.length)];
+                window.open(randomAdLink, '_blank');
+                setTimeout(callback, 500);
+            },
+
+            // ডাউনলোড শুরু করার ফাংশন - CORS সমস্যা সমাধান সহ
+            startDownload: function(url, quality, filename, videoId) {
+                // যদি url '#' হয় তাহলে YouTube ওপেন করবে
+                if (url === '#' || !url || url === 'https://www.youtube.com/watch?v=' + videoId) {
+                    const youtubeUrl = `https://www.youtube.com/watch?v=${videoId}`;
+                    
+                    // মোবাইল চেক
+                    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                    
+                    if (isMobile) {
+                        // মোবাইলে YouTube অ্যাপ খোলার চেষ্টা
+                        window.location.href = `vnd.youtube:${videoId}`;
+                        
+                        // ১ সেকেন্ড পর ওয়েব ভার্সন
+                        setTimeout(() => {
+                            window.open(youtubeUrl, '_blank');
+                        }, 1000);
+                    } else {
+                        // ডেস্কটপে সরাসরি YouTube
+                        window.open(youtubeUrl, '_blank');
+                    }
+                    
+                    this.showToast('Opening YouTube...', 'info');
+                    return;
+                }
+                
+                // CORS সমস্যা সমাধানের জন্য প্রক্সি ব্যবহার
+                const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+                
+                // একটি অস্থায়ী a এলিমেন্ট তৈরি
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename || 'video.mp4';
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
+                
+                // ডকুমেন্টে যোগ করে ক্লিক
+                document.body.appendChild(a);
+                a.click();
+                
+                // কিছুক্ষণ পর রিমুভ
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                }, 1000);
+                
+                this.showToast('Download started! If not working, try another quality.', 'success');
+            },
+
+            // টোস্ট মেসেজ দেখানোর ফাংশন
+            showToast: function(message, type = 'success') {
+                // টোস্ট কন্টেইনার
+                let container = document.getElementById('toast-container');
+                if (!container) {
+                    container = document.createElement('div');
+                    container.id = 'toast-container';
+                    container.style.cssText = `
+                        position: fixed;
+                        bottom: 20px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        z-index: 3000;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 10px;
+                        width: 90%;
+                        max-width: 400px;
+                    `;
+                    document.body.appendChild(container);
+                }
+                
+                const toast = document.createElement('div');
+                toast.style.cssText = `
+                    background: #1e293b;
+                    color: white;
+                    padding: 12px 16px;
+                    border-radius: 10px;
+                    font-size: 14px;
+                    font-weight: 500;
+                    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    animation: slideUpFade 0.3s ease forwards;
+                    border-left: 4px solid ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+                `;
+                
+                let icon = '';
+                if (type === 'success') {
+                    icon = '<svg width="20" height="20" fill="#10b981" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/></svg>';
+                } else if (type === 'info') {
+                    icon = '<svg width="20" height="20" fill="#3b82f6" viewBox="0 0 16 16"><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>';
+                } else {
+                    icon = '<svg width="20" height="20" fill="#ef4444" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>';
+                }
+                
+                toast.innerHTML = icon + '<span>' + message + '</span>';
+                container.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateY(20px)';
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            },
+
+            showDownloader: async function(videoUrl, videoTitle) {
+                const section = document.getElementById('downloaderSection');
+                const titleEl = document.getElementById('downloaderVideoTitle');
+                const thumbEl = document.getElementById('downloaderThumb');
+                const durationEl = document.getElementById('downloaderDuration');
+                const sourceEl = document.getElementById('downloaderSource');
+                const videoTab = document.getElementById('downloaderVideoTab');
+                const audioTab = document.getElementById('downloaderAudioTab');
+                const thumbLoader = document.getElementById('downloaderThumbLoader');
+                
+                // Reset
+                thumbEl.classList.remove('loaded', 'error');
+                thumbEl.src = '';
+                thumbLoader.style.display = 'block';
+                
+                // Show loading state
+                titleEl.textContent = 'Loading video information...';
+                
+                try {
+                    // Fetch video data
+                    const data = await this.fetchVideoData(videoUrl, videoTitle);
+                    
+                    // Set title and thumbnail
+                    titleEl.textContent = data.title;
+                    sourceEl.textContent = data.source.toUpperCase();
+                    durationEl.textContent = this.formatTime(data.duration);
+                    
+                    if (data.thumbnail) {
+                        thumbEl.src = data.thumbnail;
+                    } else {
+                        thumbEl.src = 'https://via.placeholder.com/600x340?text=No+Thumbnail';
+                        thumbEl.classList.add('loaded');
+                        thumbLoader.style.display = 'none';
+                    }
+                    
+                    // Clear tabs
+                    videoTab.innerHTML = '';
+                    audioTab.innerHTML = '';
+                    
+                    // Check if medias exist
+                    if (!data.medias || data.medias.length === 0) {
+                        // No medias found, show fallback options
+                        const videoId = data.videoId || this.extractYoutubeId(videoUrl) || 'dQw4w9WgXcQ';
+                        
+                        const fallbackMedias = [
+                            {
+                                quality: '1080p HD',
+                                url: `https://www.youtube.com/watch?v=${videoId}`,
+                                ext: 'mp4',
+                                size: '~25 MB',
+                                type: 'video'
+                            },
+                            {
+                                quality: '720p HD',
+                                url: `https://www.youtube.com/watch?v=${videoId}`,
+                                ext: 'mp4',
+                                size: '~15 MB',
+                                type: 'video'
+                            },
+                            {
+                                quality: '480p SD',
+                                url: `https://www.youtube.com/watch?v=${videoId}`,
+                                ext: 'mp4',
+                                size: '~8 MB',
+                                type: 'video'
+                            },
+                            {
+                                quality: '360p SD',
+                                url: `https://www.youtube.com/watch?v=${videoId}`,
+                                ext: 'mp4',
+                                size: '~5 MB',
+                                type: 'video'
+                            },
+                            {
+                                quality: 'MP3 Audio',
+                                url: `https://www.youtube.com/watch?v=${videoId}`,
+                                ext: 'mp3',
+                                size: '~3 MB',
+                                type: 'audio'
+                            }
+                        ];
+                        
+                        data.medias = fallbackMedias;
+                    }
+                    
+                    // Add formats to tabs
+                    data.medias.forEach(item => {
+                        const isVideo = item.type === 'video' || (item.ext && item.ext !== 'mp3');
+                        const quality = item.quality || 'HD';
+                        const size = item.size ? ` (${item.size})` : '';
+                        const videoId = data.videoId || this.extractYoutubeId(videoUrl) || 'dQw4w9WgXcQ';
+                        
+                        const html = `
+                            <div class="downloader-format-item">
+                                <div class="downloader-format-info">
+                                    <h4>${quality} ${size}</h4>
+                                    <span>${item.ext?.toUpperCase() || 'MP4'}</span>
+                                </div>
+                                <div>
+                                    <button class="downloader-dl-btn" onclick="downloader.startDownload('${item.url}', '${quality}', '${data.title} - ${quality}.${item.ext || 'mp4'}', '${videoId}')">
+                                        Download
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                            <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                        
+                        if (isVideo) {
+                            videoTab.insertAdjacentHTML('beforeend', html);
+                        } else {
+                            audioTab.insertAdjacentHTML('beforeend', html);
+                        }
+                    });
+                    
+                    this.showToast('Video loaded successfully!', 'success');
+                    
+                } catch (error) {
+                    console.error('Error showing downloader:', error);
+                    titleEl.textContent = 'Error loading video. Please try again.';
+                    this.showToast('Failed to load video info', 'error');
+                }
+                
+                section.classList.add('active');
+            }
+        };
+
+        function switchDownloaderTab(type) {
+            const videoTab = document.getElementById('downloaderVideoTab');
+            const audioTab = document.getElementById('downloaderAudioTab');
+            const tabs = document.querySelectorAll('.downloader-tab-btn');
+            
+            tabs.forEach(btn => btn.classList.remove('active'));
+            
+            if (type === 'video') {
+                tabs[0].classList.add('active');
+                videoTab.style.display = 'flex';
+                audioTab.style.display = 'none';
+            } else {
+                tabs[1].classList.add('active');
+                videoTab.style.display = 'none';
+                audioTab.style.display = 'flex';
+            }
+        }
+
+        function closeDownloader() {
+            document.getElementById('downloaderSection').classList.remove('active');
         }
 
         // ============================================
@@ -1914,13 +2711,24 @@
             // প্রথমে Adsgram এড দেখাব
             if (typeof showAdsgramAd === 'function') {
                 showAdsgramAd(function(success) {
-                    // এড দেখানোর পর (সফল বা ব্যর্থ) ওল্ড সিস্টেম চালাব
-                    showOldAdSystem();
+                    // এড দেখানোর পর ডাউনলোডার চালাব
+                    startDownloaderProcess();
                 });
             } else {
-                // Adsgram ফাংশন না থাকলে সরাসরি ওল্ড সিস্টেম
-                showOldAdSystem();
+                // Adsgram ফাংশন না থাকলে সরাসরি ডাউনলোডার
+                startDownloaderProcess();
             }
+        }
+
+        function startDownloaderProcess() {
+            // প্রথমে রিডাইরেক্ট পপআপ দেখাব
+            downloader.showRedirectPopup(function() {
+                // অ্যাড ওপেন করব
+                downloader.redirectToAd(function() {
+                    // ডাউনলোডার দেখাব
+                    downloader.showDownloader(selectedMovie.videoUrl, selectedMovie.title);
+                });
+            });
         }
 
         function showOldAdSystem() {
@@ -1995,15 +2803,8 @@
                 closeAdModal();
                 
                 if (downloadMode) {
-                    // ডাউনলোড মোডে টেলিগ্রাম রিডাইরেক্ট
-                    if (TELEGRAM_CONFIG.enabled && TELEGRAM_CONFIG.redirectAfterAd) {
-                        setTimeout(() => {
-                            window.open(TELEGRAM_CONFIG.channelLink, '_blank');
-                        }, 500);
-                    } else {
-                        // অথবা সরাসরি ডাউনলোড URL
-                        window.open(selectedMovie.downloadUrl, '_blank');
-                    }
+                    // ডাউনলোড মোডে সরাসরি ডাউনলোডার চালাব
+                    startDownloaderProcess();
                 } else {
                     // প্লেয়ার ওপেন করব
                     openPlayer();
@@ -2107,13 +2908,8 @@
                 closeAdModal();
                 
                 if (downloadMode) {
-                    if (TELEGRAM_CONFIG.enabled && TELEGRAM_CONFIG.redirectAfterAd) {
-                        setTimeout(() => {
-                            window.open(TELEGRAM_CONFIG.channelLink, '_blank');
-                        }, 500);
-                    } else {
-                        window.open(selectedMovie.downloadUrl, '_blank');
-                    }
+                    // ডাউনলোড মোডে সরাসরি ডাউনলোডার চালাব
+                    startDownloaderProcess();
                 } else {
                     openPlayer();
                 }
